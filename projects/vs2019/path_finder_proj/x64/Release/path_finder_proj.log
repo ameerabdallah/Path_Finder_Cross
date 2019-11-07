@@ -1,0 +1,6 @@
+﻿  main.cpp
+  Generating code
+  Compiler version has changed, fall back to full compilation.
+  All 127 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  path_finder_proj.vcxproj -> C:\Users\ameer\Desktop\Git\Path_Finder_Cross\projects\vs2019\path_finder_proj\x64\Release\path_finder_proj.exe
