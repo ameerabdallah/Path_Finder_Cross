@@ -6,10 +6,10 @@ void Node::set_rect_color(sf::Color col)
 	rect.setFillColor(col);
 }
 
-Node::Node(sf::RectangleShape rect, NodeState state)
+Node::Node(sf::RectangleShape rect)
 {
 	this->rect = rect;
-	this->state = state;
+    state = NodeState::open;
 }
 
 void Node::set_state(NodeState state)

@@ -13,7 +13,7 @@ private:
 	void set_rect_color(sf::Color col);
 
 public:
-	Node(sf::RectangleShape rect, NodeState state = NodeState::open);
+	Node(sf::RectangleShape rect);
 
 	void set_state(NodeState state);
 	const NodeState get_state();

@@ -5,7 +5,7 @@
 class Grid
 {
 private:
-	std::vector< std::vector <Node> > grid; // 2d vector of Nodes
+	std::vector< std::vector < Node* > > grid; // 2d vector of Nodes
 	int grid_width;	// width of grid
 	int grid_height;	// height of grid
 
