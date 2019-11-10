@@ -5,16 +5,21 @@
 class Grid
 {
 private:
+	const sf::RectangleShape PLAIN_RECT = sf::RectangleShape(sf::Vector2f(0, 0));
+	unsigned int w_width = 0, w_height = 0; // Window width and window height
+	sf::RenderWindow* window;
 	std::vector< std::vector < Node* > > grid; // 2d vector of Nodes
-	int grid_width;	// width of grid
-	int grid_height;	// height of grid
+	unsigned int grid_width = 0;	// width of grid
+	unsigned int grid_height = 0;	// height of grid
 
 public:
-	const sf::RectangleShape PLAIN_RECT = sf::RectangleShape(sf::Vector2f(0, 0));
-	void resize(int width, int height, int w_width, int w_height);
+	Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_height);
+	void initGrid();
+
+	void resize(int width, int height);
 
 	// USE UPDATE_GRID_LAYOUT BEFORE DRAWING GRID IF GRID WAS CHANGED
-	void update_grid_layout(int w_width, int w_height);
+	void update_grid_layout();
 
 	// USE UPDATE_GRID_LAYOUT BEFORE DRAWING GRID IF GRID WAS CHANGED
 	void draw_grid();

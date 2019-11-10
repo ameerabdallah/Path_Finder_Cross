@@ -6,10 +6,11 @@ void Node::set_rect_color(sf::Color col)
 	rect.setFillColor(col);
 }
 
-Node::Node(sf::RectangleShape rect)
+Node::Node()
 {
-	this->rect = rect;
-    state = NodeState::open;
+	rect.setOutlineColor(sf::Color::Black);
+	rect.setOutlineThickness(1.0f);
+	set_state(NodeState::open);
 }
 
 void Node::set_state(NodeState state)
@@ -33,21 +34,6 @@ void Node::set_state(NodeState state)
 const NodeState Node::get_state()
 {
 	return state;
-}
-
-void Node::set_rect_size(sf::Vector2f vect)
-{
-	rect.setSize(vect);
-}
-
-void Node::set_rect_pos(sf::Vector2f vect)
-{
-	rect.setPosition(vect);
-}
-
-const sf::RectangleShape Node::get_rect()
-{
-	return rect;
 }
 
 const sf::Vector2f Node::get_rect_pos()
