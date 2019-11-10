@@ -17,7 +17,5 @@ public:
 
 	void set_state(NodeState state);
 	const NodeState get_state();
-
-	sf::RectangleShape get_rect();
 	const sf::Vector2f get_rect_pos();
 };
