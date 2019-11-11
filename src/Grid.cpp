@@ -1,6 +1,7 @@
 #include "Grid.h"
 #include <iostream>
 
+// Constructor
 Grid::Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_height)
 {
 	this->window = window;
@@ -20,6 +21,8 @@ Grid::Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_
 	update_grid_layout();
 }
 
+
+// initGrid() initializes the grid with new Node objects
 void Grid::initGrid()
 {
 	for (int x = 0; x < grid_width; x++)
@@ -31,6 +34,11 @@ void Grid::initGrid()
 	}
 }
 
+
+/* This function resizes the grid while maintaining
+   the information held in the old grid, that way
+   information about the states of each Node don't
+   disappear*/
 void Grid::resize(int new_width, int new_height)
 {
 	int prev_width = grid_width;
@@ -104,7 +112,7 @@ void Grid::resize(int new_width, int new_height)
 }
 
 
-// Update Grid Layout
+// Sets the size and position of each Node/rectangle on the grid
 void Grid::update_grid_layout()
 {
 	float rect_width = w_width / float(grid_width),
@@ -114,14 +122,14 @@ void Grid::update_grid_layout()
 	{
 		for (int y = 0; y < grid_height; y++)
 		{
-			grid[x][y]->rect.setSize(sf::Vector2f(rect_width, rect_height));
-			grid[x][y]->rect.setPosition(sf::Vector2f(rect_width * x, rect_height * y));
-			std::cout << grid[x][y]->rect.getSize().x;
+			grid[x][y]->set_rect_size(sf::Vector2f(rect_width, rect_height));
+			grid[x][y]->set_rect_position(sf::Vector2f(rect_width * x, rect_height * y));
 		}
-
 	}
 }
 
+
+// This function draws each rectangle in the grid to the window member variable
 void Grid::draw_grid()
 {
 	for (int x = 0; x < grid_width; x++)
@@ -129,12 +137,14 @@ void Grid::draw_grid()
 		for (int y = 0; y < grid_height; y++)
 		{
 
-			window->draw(grid[x][y]->rect);
+			window->draw(grid[x][y]->get_rectangle());
 
 		}
 	}
 }
 
+
+// Getter
 const int Grid::get_width()
 {
 	return grid_width;

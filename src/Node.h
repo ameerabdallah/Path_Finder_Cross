@@ -4,18 +4,27 @@
 
 class Node
 {
-private:
+private:	
 	
-	// Colors
-	NodeState state = NodeState::open;			// State of Node
+	sf::RectangleShape rect;	// Rectangle Associated with Node
 
-	void set_rect_color(sf::Color col);
+	NodeState state;	// State of Node
 
 public:
-	sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(0, 0));	// Rectangle Associated with Node
+	
+	// Constructor
 	Node();
 
+	// Setters
 	void set_state(NodeState state);
+	void set_rect_color(sf::Color color);
+	void set_rect_position(sf::Vector2f position);
+	void set_rect_size(sf::Vector2f size);
+
+	// Getters
 	const NodeState get_state();
-	const sf::Vector2f get_rect_pos();
+	const sf::Color get_rect_color();
+	const sf::Vector2f get_rect_position();
+	const sf::Vector2f get_rect_size();
+	const sf::RectangleShape get_rectangle();
 };
