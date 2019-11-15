@@ -7,8 +7,7 @@ Node::Node()
 {
 	rect.setOutlineColor(sf::Color::Black);
 	rect.setOutlineThickness(1.0f);
-	rect.setFillColor(sf::Color::White);
-	state = NodeState::open;
+	set_state(NodeState::open);
 }
 
 
@@ -20,14 +19,19 @@ void Node::set_state(NodeState state)
 	{
 	case NodeState::open:
 		rect.setFillColor(sf::Color::White);			// set rect to white
+		break;
 	case NodeState::wall:
 		rect.setFillColor(sf::Color(64, 64, 64));		// set rect to dark grey
+		break;
 	case NodeState::start:
 		rect.setFillColor(sf::Color::Cyan);				// set rect to cyan
+		break;
 	case NodeState::destination:
 		rect.setFillColor(sf::Color::Yellow);			// set rect to yellow
+		break;
 	case NodeState::path:
 		rect.setFillColor(sf::Color::Green);			// set rect to green
+		break;
 	}
 }
 

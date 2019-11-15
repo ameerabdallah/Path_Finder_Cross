@@ -2,6 +2,16 @@
 #include <SFML/Graphics.hpp>
 #include "NodeState.h"
 
+/*
+	The Node class should hold a RectangleShape called rect and a NodeState called state. The 
+	rect object should be modified to visually represent what is going on in the program. It
+	also holds information about it's current position in the window, size, color, etc.
+
+	1)
+	set_state(NodeState state) sets the state of the node and changes the color of the rectangle
+	based on what state it is being changed to
+*/
+
 class Node
 {
 private:	
@@ -28,3 +38,4 @@ public:
 	const sf::Vector2f get_rect_size();
 	const sf::RectangleShape get_rectangle();
 };
+

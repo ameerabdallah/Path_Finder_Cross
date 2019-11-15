@@ -17,13 +17,14 @@ Grid::Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_
 		grid[i].resize(grid_height);
 	}
 
-	initGrid();
-	update_grid_layout();
+	init_grid();
 }
 
 
-// initGrid() initializes the grid with new Node objects
-void Grid::initGrid()
+// init_grid() initializes the grid with new Node objects and
+// calls update_grid_layout() to set the size and position of
+// the Node objects
+void Grid::init_grid()
 {
 	for (int x = 0; x < grid_width; x++)
 	{
@@ -32,6 +33,7 @@ void Grid::initGrid()
 			grid[x][y] = new Node();
 		}
 	}
+	update_grid_layout();
 }
 
 
@@ -116,7 +118,7 @@ void Grid::resize(int new_width, int new_height)
 void Grid::update_grid_layout()
 {
 	float rect_width = w_width / float(grid_width),
-		rect_height = w_height / float(grid_height);
+			rect_height = w_height / float(grid_height);
 
 	for (int x = 0; x < grid_width; x++)
 	{
