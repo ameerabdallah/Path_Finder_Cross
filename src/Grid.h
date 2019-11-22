@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "Node.h"
-#include "Position.h"
 #include "SFML/Window/Mouse.hpp"
 
 
