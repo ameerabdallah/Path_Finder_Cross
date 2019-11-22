@@ -117,15 +117,13 @@ void Grid::resize(int new_width, int new_height)
 // Sets the size and position of each Node/rectangle on the grid
 void Grid::update_grid_layout()
 {
-	float rect_width = w_width / float(grid_width),
-			rect_height = w_height / float(grid_height);
 
 	for (int x = 0; x < grid_width; x++)
 	{
 		for (int y = 0; y < grid_height; y++)
 		{
-			grid[x][y]->set_rect_size(sf::Vector2f(rect_width, rect_height));
-			grid[x][y]->set_rect_position(sf::Vector2f(rect_width * x, rect_height * y));
+			grid[x][y]->set_rect_size(sf::Vector2f( get_rect_width(), get_rect_height()));
+			grid[x][y]->set_rect_position(sf::Vector2f(get_rect_width() * x, get_rect_width() * y));
 		}
 	}
 }
@@ -145,7 +143,6 @@ void Grid::draw_grid()
 	}
 }
 
-
 // Getter
 const int Grid::get_width()
 {
@@ -155,4 +152,22 @@ const int Grid::get_width()
 const int Grid::get_height()
 {
 	return grid_height;
+}
+
+const int Grid::get_rect_width()
+{
+	return window->getSize().x / grid_width;
+}
+
+const int Grid::get_rect_height()
+{
+	return window->getSize().y / grid_height;
+}
+
+const sf::Vector2i Grid::get_mouse_pos_in_grid(float x, float y)
+{
+	int grid_x = x / get_rect_width();
+	int grid_y = y / get_rect_height();
+
+	return sf::Vector2i(grid_x, grid_y);
 }

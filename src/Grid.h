@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "Node.h"
+#include "Position.h"
+#include "SFML/Window/Mouse.hpp"
 
 
 /*
@@ -69,8 +71,11 @@ public:
 	// Getters
 	const int get_width();
 	const int get_height();
+	const int get_rect_width();
+	const int get_rect_height();
 
-	// const Position mouse_pos_to_grid_pos();
+	const sf::Vector2i get_mouse_pos_in_grid(float x, float y);
+
 	/*
 		TODO:
 		1) Grid class destructor

@@ -21,7 +21,7 @@ void Node::set_state(NodeState state)
 		rect.setFillColor(sf::Color::White);			// set rect to white
 		break;
 	case NodeState::wall:
-		rect.setFillColor(sf::Color(64, 64, 64));		// set rect to dark grey
+		rect.setFillColor(sf::Color(30, 30, 30));		// set rect to dark grey
 		break;
 	case NodeState::start:
 		rect.setFillColor(sf::Color::Cyan);				// set rect to cyan
