@@ -143,7 +143,14 @@ void Grid::draw_grid()
 	}
 }
 
-// Getter
+// Setters
+
+void Grid::set_node_state(int x, int y)
+{
+	grid[x][y]->set_state(NodeState::wall);
+}
+
+// Getters
 const int Grid::get_width()
 {
 	return grid_width;
@@ -164,10 +171,11 @@ const int Grid::get_rect_height()
 	return window->getSize().y / grid_height;
 }
 
-const sf::Vector2i Grid::get_mouse_pos_in_grid(float x, float y)
+const sf::Vector2i Grid::get_mouse_pos_in_grid(sf::Vector2i mouse_pos)
 {
-	int grid_x = x / get_rect_width();
-	int grid_y = y / get_rect_height();
+	int grid_x = mouse_pos.x / get_rect_width();
+	int grid_y = mouse_pos.y / get_rect_height();
 
+	std::printf("(%d, %d)", grid_x, grid_y);
 	return sf::Vector2i(grid_x, grid_y);
 }
