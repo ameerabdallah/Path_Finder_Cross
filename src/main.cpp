@@ -5,7 +5,7 @@
 
 int main()
 {
-	int brushState = 0;
+	NodeState brushState = NodeState::open;
 	int numOfStart = 0, numOfDest = 0;
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Hello World");
 
@@ -21,26 +21,26 @@ int main()
 			case(sf::Event::Closed):
 					window.close();
 			case(sf::Event::KeyPressed): {
-					if (event.key.code == sf::Keyboard::X) {
-						brushState = 0;
-						std::printf("%d ", brushState);
-						break;
-					}
-					if (event.key.code == sf::Keyboard::W) {
-						brushState = 1;
-						std::printf("%d ", brushState);
-						break;
-					}
-					if (event.key.code == sf::Keyboard::S) {
-						brushState = 2;
-						std::printf("%d ", brushState);
-						break;
-					}
-					if (event.key.code == sf::Keyboard::D) {
-						brushState = 3;
-						std::printf("%d ", brushState);
-						break;
-					}
+				switch (event.key.code)
+				{
+				case(sf::Keyboard::X):
+					brushState = NodeState::open;
+					std::printf("%d ", brushState);
+					break;
+				case(sf::Keyboard::W):
+					brushState = NodeState::wall;
+					std::printf("%d ", brushState);
+					break;
+				case(sf::Keyboard::S):
+					brushState = NodeState::start;
+					std::printf("%d ", brushState);
+					break;
+				case(sf::Keyboard::D):
+					brushState = NodeState::destination;
+					std::printf("%d ", brushState);
+					break;
+				}
+				break;
 				}
 			case(sf::Event::MouseButtonPressed/*&& grid.is_running()*/):
 				{

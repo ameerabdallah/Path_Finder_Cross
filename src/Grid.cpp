@@ -145,16 +145,9 @@ void Grid::draw_grid()
 
 // Setters
 
-void Grid::set_node_state(int x, int y, int state)
+void Grid::set_node_state(int x, int y, NodeState state)
 {
-	if(state == 0)
-		grid[x][y]->set_state(NodeState::open);
-	if(state == 1)
-		grid[x][y]->set_state(NodeState::wall);
-	if(state == 2)
-		grid[x][y]->set_state(NodeState::start);
-	if(state == 3)
-		grid[x][y]->set_state(NodeState::destination);
+	grid[x][y]->set_state(state);
 }
 
 // Getters

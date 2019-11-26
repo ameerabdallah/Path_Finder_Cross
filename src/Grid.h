@@ -68,7 +68,7 @@ public:
 	void draw_grid();
 
 	// Setters
-	void set_node_state(int x, int y, int state);
+	void set_node_state(int x, int y, NodeState state);
 
 	// Getters
 	const int get_width();
