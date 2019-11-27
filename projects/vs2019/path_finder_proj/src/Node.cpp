@@ -1,56 +1,80 @@
 #pragma once
+#include <iostream>
 #include "Node.h"
 
-void Node::set_rect_color(sf::Color col)
+// Constructor
+Node::Node()
 {
-	rect.setFillColor(col);
+	rect.setOutlineColor(sf::Color::Black);
+	rect.setOutlineThickness(1.0f);
+	set_state(NodeState::open);
 }
 
-Node::Node(sf::RectangleShape rect, NodeState state)
-{
-	this->rect = rect;
-	this->state = state;
-}
 
+// Setters
 void Node::set_state(NodeState state)
 {
 	this->state = state;
 	switch (state)
 	{
 	case NodeState::open:
-		set_rect_color(sf::Color::White);			// set rect to white
+		rect.setFillColor(sf::Color::White);			// set rect to white
+		break;
 	case NodeState::wall:
-		set_rect_color(sf::Color(64, 64, 64));		// set rect to dark grey
+		rect.setFillColor(sf::Color(30, 30, 30));		// set rect to dark grey
+		break;
 	case NodeState::start:
-		set_rect_color(sf::Color::Cyan);			// set rect to cyan
+		rect.setFillColor(sf::Color::Cyan);				// set rect to cyan
+		break;
 	case NodeState::destination:
-		set_rect_color(sf::Color::Yellow);			// set rect to yellow
+		rect.setFillColor(sf::Color::Yellow);			// set rect to yellow
+		break;
 	case NodeState::path:
-		set_rect_color(sf::Color::Green);			// set rect to green
+		rect.setFillColor(sf::Color::Green);			// set rect to green
+		break;
 	}
 }
 
+void Node::set_rect_color(sf::Color color)
+{
+	rect.setFillColor(color);
+}
+
+void Node::set_rect_position(sf::Vector2f position)
+{
+	rect.setPosition(position);
+}
+
+void Node::set_rect_size(sf::Vector2f size)
+{
+	rect.setSize(size);
+}
+
+
+// Getters
 const NodeState Node::get_state()
 {
 	return state;
 }
 
-void Node::set_rect_size(sf::Vector2f vect)
+const sf::Color Node::get_rect_color()
 {
-	rect.setSize(vect);
+	return rect.getFillColor();
 }
 
-void Node::set_rect_pos(sf::Vector2f vect)
+const sf::Vector2f Node::get_rect_position()
 {
-	rect.setPosition(vect);
+	return rect.getPosition();
 }
 
-const sf::RectangleShape Node::get_rect()
+const sf::Vector2f Node::get_rect_size()
+{
+	return rect.getSize();
+}
+
+const sf::RectangleShape Node::get_rectangle()
 {
 	return rect;
 }
 
-const sf::Vector2f Node::get_rect_pos()
-{
-	return rect.getPosition();
-}
+

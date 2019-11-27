@@ -19,7 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Grid.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Node.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Grid.h" />
+    <ClInclude Include="src\Node.h" />
+    <ClInclude Include="src\NodeState.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
