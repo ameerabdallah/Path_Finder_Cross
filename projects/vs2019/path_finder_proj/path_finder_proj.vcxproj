@@ -18,17 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\src\Grid.cpp" />
-    <ClCompile Include="..\..\..\src\main.cpp" />
-    <ClCompile Include="..\..\..\src\Node.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\src\Grid.h" />
-    <ClInclude Include="..\..\..\src\Node.h" />
-    <ClInclude Include="..\..\..\src\NodeState.h" />
-  </ItemGroup>
-  <PropertyGroup Label="Globals">
+   <ItemGroup>
+    <ClCompile Include="..\..\..\src\*.cpp">
+    </ClCompile>
+  <ClInclude Include="..\..\..\src\*.h">
+    </ClInclude>
+ </ItemGroup>
+    <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{4B5164CA-BC92-4F70-8873-7F83AA4D9DE4}</ProjectGuid>
     <RootNamespace>pathfinderproj</RootNamespace>
