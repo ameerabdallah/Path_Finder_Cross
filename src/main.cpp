@@ -5,13 +5,12 @@
 
 int main()
 {
-	int brushState = 0;
+	NodeState brushState = NodeState::open;
 	int numOfStart = 0, numOfDest = 0;
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Hello World");
 
 	Grid grid(&window, 10, 10);
 
-	std::printf("%d ", brushState);
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -22,22 +21,22 @@ int main()
 					window.close();
 			case(sf::Event::KeyPressed): {
 					if (event.key.code == sf::Keyboard::X) {
-						brushState = 0;
+						brushState = NodeState::open;
 						std::printf("%d ", brushState);
 						break;
 					}
 					if (event.key.code == sf::Keyboard::W) {
-						brushState = 1;
+						brushState = NodeState::wall;
 						std::printf("%d ", brushState);
 						break;
 					}
 					if (event.key.code == sf::Keyboard::S) {
-						brushState = 2;
+						brushState = NodeState::start;
 						std::printf("%d ", brushState);
 						break;
 					}
 					if (event.key.code == sf::Keyboard::D) {
-						brushState = 3;
+						brushState = NodeState::destination;
 						std::printf("%d ", brushState);
 						break;
 					}
@@ -46,11 +45,9 @@ int main()
 				{
 					if (event.mouseButton.button == sf::Mouse::Left) {
 						if (sf::Mouse::getPosition(window).x <= window.getSize().x && sf::Mouse::getPosition(window).y <= window.getSize().y) {
-							int x = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window)).x;
-							int y = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window)).y;
-							/*if (numOfStart >= 1) {
-
-							}*/
+							sf::Vector2i pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
+							int x = pos.x;
+							int y = pos.y;
 							grid.set_node_state(x, y, brushState);
 						}
 					}

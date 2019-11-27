@@ -123,7 +123,7 @@ void Grid::update_grid_layout()
 		for (int y = 0; y < grid_height; y++)
 		{
 			grid[x][y]->set_rect_size(sf::Vector2f( get_rect_width(), get_rect_height()));
-			grid[x][y]->set_rect_position(sf::Vector2f(get_rect_width() * x, get_rect_width() * y));
+			grid[x][y]->set_rect_position(sf::Vector2f(get_rect_width() * x, get_rect_height() * y));
 		}
 	}
 }
@@ -145,16 +145,17 @@ void Grid::draw_grid()
 
 // Setters
 
-void Grid::set_node_state(int x, int y, int state)
+void Grid::set_node_state(int x, int y, NodeState state)
 {
-	if(state == 0)
-		grid[x][y]->set_state(NodeState::open);
-	if(state == 1)
-		grid[x][y]->set_state(NodeState::wall);
-	if(state == 2)
-		grid[x][y]->set_state(NodeState::start);
-	if(state == 3)
-		grid[x][y]->set_state(NodeState::destination);
+	grid[x][y]->set_state(state);
+	if (state == NodeState::start) {
+		if (s_x != -1) grid[s_x][s_y]->set_state(NodeState::open);		//s_x == -1 only when the grid is created.
+		s_x = x, s_y = y;
+	}
+	else if (state == NodeState::destination) {
+		if (d_x != -1) grid[d_x][d_y]->set_state(NodeState::open);		//d_x == -1 only when the grid is created.
+		d_x = x, d_y = y;
+	}
 }
 
 // Getters
