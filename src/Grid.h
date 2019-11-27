@@ -54,6 +54,8 @@ public:
 	// the Node objects
 	void init_grid();
 
+	Node get_node(int x, int y);
+
 	/* This function resizes the grid while maintaining
 		the information held in the old grid, that way
 		information about the NodeState for each Node
@@ -73,8 +75,8 @@ public:
 	// Getters
 	const int get_width();
 	const int get_height();
-	const int get_rect_width();
-	const int get_rect_height();
+	const float get_rect_width();
+	const float get_rect_height();
 	const sf::Vector2i get_mouse_pos_in_grid(sf::Vector2i mouse_pos);
 
 	/*

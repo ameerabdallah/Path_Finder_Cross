@@ -11,7 +11,8 @@ int main()
 
 	Grid grid(&window, 10, 10);
 
-	std::printf("%d ", brushState);
+	grid.resize(12, 10);
+	 
 	while (window.isOpen())
 	{
 		sf::Event event;
