@@ -36,6 +36,10 @@ void Grid::init_grid()
 	update_grid_layout();
 }
 
+Node Grid::get_node(int x, int y)
+{
+	return *grid[x][y];
+}
 
 /* This function resizes the grid while maintaining
    the information held in the old grid, that way
@@ -51,9 +55,9 @@ void Grid::resize(int new_width, int new_height)
 
 	// Resize the vector
 	grid.resize(new_width);
-	for (int i = 0; i < new_width; i++)
+	for (int x = 0; x < new_width; x++)
 	{
-		grid[i].resize(new_height);
+		grid[x].resize(new_height);
 	}
 
 	/*
@@ -76,8 +80,8 @@ void Grid::resize(int new_width, int new_height)
 		}
 	}
 
-	// If the new_height is larger after resize but new_width is >= prev_width
-	if (new_height > prev_height && new_width <= prev_width)
+	// If the new_height is larger after resize but new_width is <= prev_width
+	else if (new_height > prev_height && new_width <= prev_width)
 	{
 		for (int x = 0; x < new_width; x++)
 		{
@@ -89,7 +93,7 @@ void Grid::resize(int new_width, int new_height)
 	}
 
 	// If the new_width is > prev_width and new_height is > prev_height
-	if (new_width > prev_width && new_height > prev_height)
+	else if (new_width > prev_width && new_height > prev_height)
 	{
 		// Fill in new grid space for width
 		for (int x = prev_width; x < new_width; x++)
@@ -122,8 +126,8 @@ void Grid::update_grid_layout()
 	{
 		for (int y = 0; y < grid_height; y++)
 		{
-			grid[x][y]->set_rect_size(sf::Vector2f( get_rect_width(), get_rect_height()));
-			grid[x][y]->set_rect_position(sf::Vector2f(get_rect_width() * x, get_rect_width() * y));
+			grid[x][y]->set_rect_size(sf::Vector2f(get_rect_width(), get_rect_height()));
+			grid[x][y]->set_rect_position(sf::Vector2f(get_rect_width() * x, get_rect_height() * y));
 		}
 	}
 }
@@ -136,18 +140,24 @@ void Grid::draw_grid()
 	{
 		for (int y = 0; y < grid_height; y++)
 		{
-
 			window->draw(grid[x][y]->get_rectangle());
-
 		}
 	}
 }
 
 // Setters
 
-void Grid::set_node_state(int x, int y)
+void Grid::set_node_state(int x, int y, NodeState state)
 {
-	grid[x][y]->set_state(NodeState::wall);
+	grid[x][y]->set_state(state);
+	if (state == NodeState::start) {
+		if (s_x != -1) grid[s_x][s_y]->set_state(NodeState::open);		//s_x == -1 only when the grid is created.
+		s_x = x, s_y = y;
+	}
+	else if (state == NodeState::destination) {
+		if (d_x != -1) grid[d_x][d_y]->set_state(NodeState::open);		//d_x == -1 only when the grid is created.
+		d_x = x, d_y = y;
+	}
 }
 
 // Getters
@@ -161,14 +171,15 @@ const int Grid::get_height()
 	return grid_height;
 }
 
-const int Grid::get_rect_width()
+const float Grid::get_rect_width()
 {
-	return window->getSize().x / grid_width;
+	return window->getSize().x / (float)grid_width;
 }
 
-const int Grid::get_rect_height()
+const float Grid::get_rect_height()
 {
-	return window->getSize().y / grid_height;
+	return window->getSize().y / (float)grid_height;
+
 }
 
 const sf::Vector2i Grid::get_mouse_pos_in_grid(sf::Vector2i mouse_pos)
