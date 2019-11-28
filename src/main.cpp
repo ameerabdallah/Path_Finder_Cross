@@ -11,6 +11,8 @@ int main()
 
 	Grid grid(&window, 10, 10);
 
+	grid.resize(12, 10);
+	 
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -20,26 +22,26 @@ int main()
 			case(sf::Event::Closed):
 					window.close();
 			case(sf::Event::KeyPressed): {
-					if (event.key.code == sf::Keyboard::X) {
-						brushState = NodeState::open;
-						std::printf("%d ", brushState);
-						break;
-					}
-					if (event.key.code == sf::Keyboard::W) {
-						brushState = NodeState::wall;
-						std::printf("%d ", brushState);
-						break;
-					}
-					if (event.key.code == sf::Keyboard::S) {
-						brushState = NodeState::start;
-						std::printf("%d ", brushState);
-						break;
-					}
-					if (event.key.code == sf::Keyboard::D) {
-						brushState = NodeState::destination;
-						std::printf("%d ", brushState);
-						break;
-					}
+				switch (event.key.code)
+				{
+				case(sf::Keyboard::X):
+					brushState = NodeState::open;
+					std::printf("%d ", brushState);
+					break;
+				case(sf::Keyboard::W):
+					brushState = NodeState::wall;
+					std::printf("%d ", brushState);
+					break;
+				case(sf::Keyboard::S):
+					brushState = NodeState::start;
+					std::printf("%d ", brushState);
+					break;
+				case(sf::Keyboard::D):
+					brushState = NodeState::destination;
+					std::printf("%d ", brushState);
+					break;
+				}
+				break;
 				}
 			case(sf::Event::MouseButtonPressed/*&& grid.is_running()*/):
 				{

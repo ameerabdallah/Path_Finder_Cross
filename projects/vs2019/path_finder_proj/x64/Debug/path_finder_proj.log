@@ -1,2 +1,12 @@
-﻿  main.cpp
+﻿  Grid.cpp
+C:\Users\ameer\Desktop\Git\Path_Finder_Cross\projects\vs2019\path_finder_proj\src\Grid.cpp(14,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\ameer\Desktop\Git\Path_Finder_Cross\projects\vs2019\path_finder_proj\src\Grid.cpp(25,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\ameer\Desktop\Git\Path_Finder_Cross\projects\vs2019\path_finder_proj\src\Grid.cpp(27,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\ameer\Desktop\Git\Path_Finder_Cross\projects\vs2019\path_finder_proj\src\Grid.cpp(113,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\ameer\Desktop\Git\Path_Finder_Cross\projects\vs2019\path_finder_proj\src\Grid.cpp(115,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\ameer\Desktop\Git\Path_Finder_Cross\projects\vs2019\path_finder_proj\src\Grid.cpp(126,20): warning C4018: '<': signed/unsigned mismatch
+  Node.cpp
+  main.cpp
+  Generating Code...
+C:\Users\ameer\Desktop\Git\Path_Finder_Cross\projects\vs2019\path_finder_proj\src\Grid.cpp(128,21): warning C4018: '<': signed/unsigned mismatch
   path_finder_proj.vcxproj -> C:\Users\ameer\Desktop\Git\Path_Finder_Cross\projects\vs2019\path_finder_proj\x64\Debug\path_finder_proj.exe
