@@ -39,14 +39,19 @@ class Grid
 {
 private:
 	std::vector< std::vector < Node* > > grid; // 2d vector of Nodes
+
 	unsigned int w_width = 0,	// width of the open window
 			w_height = 0,		// height of the open window
 			grid_width = 0,		// width of grid
 			grid_height = 0;	// height of grid
-	signed int s_x = -1,		// x position of start, set to -1 to not be on the grid
+
+	unsigned int s_x = -1,		// x position of start, set to -1 to not be on the grid
 			s_y = 0,			// y position of start, value is irrelevant 
 			d_x = -1,			// x position of destination, set to -1 to not be on the grid
-			d_y = 0;			// x position of destination, value is irrelevant
+			d_y = 0;			// y position of destination, value is irrelevant
+
+	bool running = false;	// Flag for if the best path is currently being looked for
+
 	sf::RenderWindow* window;	// main window for the program
 
 public:
@@ -57,6 +62,7 @@ public:
 	// the Node objects
 	void init_grid();
 
+	// Returns the node at a position given
 	Node get_node(int x, int y);
 
 	/* This function resizes the grid while maintaining
@@ -76,29 +82,15 @@ public:
 	void set_node_state(int x, int y, NodeState state);
 
 	// Getters
+	const bool is_running();
 	const int get_width();
 	const int get_height();
-	const float get_rect_width();
-	const float get_rect_height();
+	const int get_rect_width();
+	const int get_rect_height();
 	const sf::Vector2i get_mouse_pos_in_grid(sf::Vector2i mouse_pos);
 	/*
 		TODO:
-		1) Grid class destructor
-
-		2) Implement a way for the user to interact with the grid in a way that
-		allows them to make changes to the Node's state on the grid
-			- Keyboard should be used to select the state they want attached to their
-			mouse click
-			- Mouse should be used to select the position on the grid which they want changed
-			- P.S, only allow 1 NodeState::start and 1 NodeState::destination on the grid at
-			all times. Also, do not let the user change a position to be path.
-		2) COMPLETED
-
-
-		3) Implement a way for the user to change the size of the grid using 2 sliders. 1 slider
-		should be used to change the width and the other to change the height.
-
-		4) Start working on the algorithm
+		- Start working on the algorithm
 	*/
 
 };
