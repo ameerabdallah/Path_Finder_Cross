@@ -4,6 +4,9 @@
 // Constructor
 Grid::Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_height)
 {
+	start_pos = sf::Vector2i(-1, -1);
+	destination_pos = sf::Vector2i(-1, -1);
+
 	this->window = window;
 	w_width = this->window->getSize().x;
 	w_height = this->window->getSize().y;
@@ -30,7 +33,7 @@ void Grid::init_grid()
 	{
 		for (int y = 0; y < grid_height; y++)
 		{
-			grid[x][y] = new Node();
+			grid[x][y] = new Node(x, y);
 		}
 	}
 	update_grid_layout();
@@ -75,7 +78,7 @@ void Grid::resize(int new_width, int new_height)
 		{
 			for (int y = 0; y < new_height; y++)
 			{
-				grid[x][y] = new Node();
+				grid[x][y] = new Node(x, y);
 			}
 		}
 	}
@@ -87,7 +90,7 @@ void Grid::resize(int new_width, int new_height)
 		{
 			for (int y = prev_height; y < new_height; y++)
 			{
-				grid[x][y] = new Node();
+				grid[x][y] = new Node(x, y);
 			}
 		}
 	}
@@ -100,7 +103,7 @@ void Grid::resize(int new_width, int new_height)
 		{
 			for (int y = 0; y < new_height; y++)
 			{
-				grid[x][y] = new Node();
+				grid[x][y] = new Node(x, y);
 			}
 		}
 
@@ -109,11 +112,12 @@ void Grid::resize(int new_width, int new_height)
 		{
 			for (int y = prev_height; y < new_height; y++)
 			{
-				grid[x][y] = new Node();
+				grid[x][y] = new Node(x, y);
 			}
 		}
 	}
 
+	fix_dest_start_positions();
 	update_grid_layout();
 }
 
@@ -126,7 +130,6 @@ void Grid::update_grid_layout()
 	{
 		for (int y = 0; y < grid_height; y++)
 		{
-			//grid[x][y]->set_rect_size(sf::Vector2f(get_rect_width(), get_rect_height()));
 			grid[x][y]->set_rect_size(sf::Vector2f(get_rect_width(), get_rect_height()));
 			grid[x][y]->set_rect_position(window->mapPixelToCoords(sf::Vector2i(get_rect_width() * x, get_rect_height() * y)));
 		}
@@ -146,17 +149,82 @@ void Grid::draw_grid()
 	}
 }
 
+// calculate each node's s_cost, f_cost and t_cost
+void Grid::calculate_node_costs()
+{
+	for (int i = 0; i < grid_width; i++)
+	{
+		for (int j = 0; j < grid_height; j++)
+		{
+			grid[i][j]->set_s_cost(start_pos);
+			grid[i][j]->set_d_cost(destination_pos);
+			grid[i][j]->set_t_cost();
+
+			std::cout << "(" << i << ", " << j << ")\n";
+			std::cout << "s_cost: " << grid[i][j]->get_s_cost() << std::endl;
+			std::cout << "d_cost: " << grid[i][j]->get_d_cost() << std::endl;
+			std::cout << "t_cost: " << grid[i][j]->get_t_cost() << std::endl << std::endl;
+		}
+	}
+}
+
+// check if the destination_pos and start_pos are within the bounds of the grid
+// and if they aren't set the position to -1, -1
+void Grid::fix_dest_start_positions()
+{
+	if (destination_pos.x > grid_width || destination_pos.y > grid_height)
+		destination_pos = sf::Vector2i(-1, -1);
+	
+	if (start_pos.x > grid_width || start_pos.y > grid_height)
+		start_pos = sf::Vector2i(-1, -1);
+}
+
+// A* Algorithm for finding the fastest path between the start_pos and destination_pos
+void Grid::run_a_star()
+{
+	running = true; // it is necessary to set the running flag to true so that user input is 
+					// not accepted while the algorithm is being run
+
+	// Check if the function is able to be run
+	if (destination_pos.x == -1 || start_pos.x == -1)
+	{
+		std::cout << "Please input the start and destination position before attempting to run the a* path finder\n";
+		running = false;
+		return; // exit out of function
+	}
+
+	// Necesssary so that all of the costs can be compared between nodes
+	calculate_node_costs();
+
+	/*
+	TODO:
+
+	-IMPLEMENT A-STAR PATHFINDER
+	*/
+
+
+	running = false; // This should be the last command
+}
+
 // Setters
 void Grid::set_node_state(int x, int y, NodeState state)
 {
 	grid[x][y]->set_state(state);
 	if (state == NodeState::start) {
-		if (s_x != -1) grid[s_x][s_y]->set_state(NodeState::open);		//s_x == -1 only when the grid is created.
-		s_x = x, s_y = y;
+
+		// sets the old start position as NodeState::open instead of NodeState::start
+		if (start_pos.x != -1 || start_pos.y != -1)
+			grid[start_pos.x][start_pos.y]->set_state(NodeState::open);
+
+		start_pos = sf::Vector2i(x, y);
 	}
 	else if (state == NodeState::destination) {
-		if (d_x != -1) grid[d_x][d_y]->set_state(NodeState::open);		//d_x == -1 only when the grid is created.
-		d_x = x, d_y = y;
+
+		// sets the old destination position as NodeState::open instead of NodeState::destination
+		if (destination_pos.x != -1 || destination_pos.y != -1) 
+			grid[destination_pos.x][destination_pos.y]->set_state(NodeState::open);
+
+		destination_pos = sf::Vector2i(x, y);
 	}
 }
 

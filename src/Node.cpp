@@ -1,13 +1,18 @@
 #pragma once
 #include <iostream>
+#include <cmath>
 #include "Node.h"
 
 // Constructor
-Node::Node()
+Node::Node(int x, int y)
 {
+	position = sf::Vector2i(x, y);
 	rect.setOutlineColor(sf::Color::Black);
 	rect.setOutlineThickness(1.0f);
 	set_state(NodeState::open);
+	s_cost = 0;
+	d_cost = 0;
+	t_cost = 0;
 }
 
 
@@ -50,6 +55,29 @@ void Node::set_rect_size(sf::Vector2f size)
 	rect.setSize(size);
 }
 
+void Node::set_s_cost(sf::Vector2i start)
+{
+	// the deltas are the distances between the respective coordinate
+	float delta_x = start.x - position.x;
+	float delta_y = start.y - position.y;
+
+	s_cost = std::sqrt((delta_x * delta_x) + (delta_y * delta_y));
+}
+
+void Node::set_d_cost(sf::Vector2i destination)
+{
+	// the deltas are the distances between the respective coordinate
+	float delta_x = destination.x - position.x;
+	float delta_y = destination.y - position.y;
+
+	d_cost = std::sqrt((delta_x * delta_x) + (delta_y * delta_y));
+}
+
+void Node::set_t_cost()
+{
+	t_cost = s_cost + d_cost;
+}
+
 
 // Getters
 const NodeState Node::get_state()
@@ -77,4 +105,17 @@ const sf::RectangleShape Node::get_rectangle()
 	return rect;
 }
 
+const float Node::get_s_cost()
+{
+	return s_cost;
+}
 
+const float Node::get_d_cost()
+{
+	return d_cost;
+}
+
+const float Node::get_t_cost()
+{
+	return t_cost;
+}

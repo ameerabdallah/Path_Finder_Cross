@@ -45,10 +45,8 @@ private:
 			grid_width = 0,		// width of grid
 			grid_height = 0;	// height of grid
 
-	unsigned int s_x = -1,		// x position of start, set to -1 to not be on the grid
-			s_y = 0,			// y position of start, value is irrelevant 
-			d_x = -1,			// x position of destination, set to -1 to not be on the grid
-			d_y = 0;			// y position of destination, value is irrelevant
+	sf::Vector2i start_pos = sf::Vector2i(-1,-1);			// position of the node that holds the NodeState::start (there can only be 1)
+	sf::Vector2i destination_pos = sf::Vector2i(-1, -1);	// position of the node that holds the NodeState::destination (there can only be 1)
 
 	bool running = false;	// Flag for if the best path is currently being looked for
 
@@ -78,6 +76,15 @@ public:
 	// USE UPDATE_GRID_LAYOUT BEFORE DRAWING GRID IF GRID WAS CHANGED
 	void draw_grid();
 
+	// calculate each node's s_cost, f_cost and t_cost
+	void calculate_node_costs();
+
+	// check if the destination_pos and start_pos are within the bounds of the grid
+	void fix_dest_start_positions();
+
+	// A* Algorithm for finding the fastest path between the start_pos and destination_pos
+	void run_a_star();
+
 	// Setters
 	void set_node_state(int x, int y, NodeState state);
 
@@ -88,6 +95,7 @@ public:
 	const int get_rect_width();
 	const int get_rect_height();
 	const sf::Vector2i get_mouse_pos_in_grid(sf::Vector2i mouse_pos);
+
 	/*
 		TODO:
 		- Start working on the algorithm

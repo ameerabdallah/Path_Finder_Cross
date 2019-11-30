@@ -94,6 +94,11 @@ int main()
 						window.setSize(sf::Vector2u(window.getSize().x - grid.get_rect_width(), window.getSize().y));
 					}
 					break;
+
+				case(sf::Keyboard::Enter): // Enter/Return: start the program
+
+					grid.run_a_star();
+					break;
 				}
 			}
 
