@@ -1,5 +1,6 @@
 #include "Grid.h"
-#include <iostream>
+#include <thread>
+
 
 // Constructor
 Grid::Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_height)
@@ -33,15 +34,10 @@ void Grid::init_grid()
 	{
 		for (int y = 0; y < grid_height; y++)
 		{
-			grid[x][y] = new Node(x, y);
+			grid[x][y] = new Node(sf::Vector2i(x, y));
 		}
 	}
 	update_grid_layout();
-}
-
-Node Grid::get_node(int x, int y)
-{
-	return *grid[x][y];
 }
 
 /* This function resizes the grid while maintaining
@@ -78,7 +74,7 @@ void Grid::resize(int new_width, int new_height)
 		{
 			for (int y = 0; y < new_height; y++)
 			{
-				grid[x][y] = new Node(x, y);
+				grid[x][y] = new Node(sf::Vector2i(x, y));
 			}
 		}
 	}
@@ -90,7 +86,7 @@ void Grid::resize(int new_width, int new_height)
 		{
 			for (int y = prev_height; y < new_height; y++)
 			{
-				grid[x][y] = new Node(x, y);
+				grid[x][y] = new Node(sf::Vector2i(x, y));
 			}
 		}
 	}
@@ -103,7 +99,7 @@ void Grid::resize(int new_width, int new_height)
 		{
 			for (int y = 0; y < new_height; y++)
 			{
-				grid[x][y] = new Node(x, y);
+				grid[x][y] = new Node(sf::Vector2i(x, y));
 			}
 		}
 
@@ -112,7 +108,7 @@ void Grid::resize(int new_width, int new_height)
 		{
 			for (int y = prev_height; y < new_height; y++)
 			{
-				grid[x][y] = new Node(x, y);
+				grid[x][y] = new Node(sf::Vector2i(x, y));
 			}
 		}
 	}
@@ -150,20 +146,13 @@ void Grid::draw_grid()
 }
 
 // calculate each node's s_cost, f_cost and t_cost
-void Grid::calculate_node_costs()
+void Grid::calculate_all_h_cost()
 {
 	for (int i = 0; i < grid_width; i++)
 	{
 		for (int j = 0; j < grid_height; j++)
 		{
-			grid[i][j]->set_s_cost(start_pos);
-			grid[i][j]->set_d_cost(destination_pos);
-			grid[i][j]->set_t_cost();
-
-			std::cout << "(" << i << ", " << j << ")\n";
-			std::cout << "s_cost: " << grid[i][j]->get_s_cost() << std::endl;
-			std::cout << "d_cost: " << grid[i][j]->get_d_cost() << std::endl;
-			std::cout << "t_cost: " << grid[i][j]->get_t_cost() << std::endl << std::endl;
+			grid[i][j]->calculate_h(destination_pos);
 		}
 	}
 }
@@ -182,6 +171,15 @@ void Grid::fix_dest_start_positions()
 // A* Algorithm for finding the fastest path between the start_pos and destination_pos
 void Grid::run_a_star()
 {
+	// Data Sets
+	std::vector<Node*> open;
+	std::vector<Node*> closed;
+	std::stack<sf::Vector2i> path;
+
+	Node* start_node = new Node(start_pos);
+	Node* destination_node = new Node(destination_pos);
+	Node* current_node;
+
 	running = true; // it is necessary to set the running flag to true so that user input is 
 					// not accepted while the algorithm is being run
 
@@ -194,37 +192,192 @@ void Grid::run_a_star()
 	}
 
 	// Necesssary so that all of the costs can be compared between nodes
-	calculate_node_costs();
+	calculate_all_h_cost();
 
-	/*
-	TODO:
+	open.push_back(start_node);
 
-	-IMPLEMENT A-STAR PATHFINDER
-	*/
+	while (!open.empty())
+	{
+		current_node = open[0];
+		//std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
+		int current_index = 0, index = 0;
+		for (Node* node : open)
+		{
+			if (node->f < current_node->f)
+			{
+				current_node = node;
+				current_index = index;
+			}
+			index++;
+		}
 
-	running = false; // This should be the last command
+		open.erase(open.begin() + current_index);
+
+		bool skip_push_back = false;
+		for (Node* closed_node : closed)
+		{
+			if (current_node->get_pos() == closed_node->get_pos())
+			{
+				skip_push_back = true;
+				break;
+			}
+		}
+
+		if (!skip_push_back)
+		{
+			grid[current_node->get_pos().x][current_node->get_pos().y]->set_state(NodeState::visited);
+			closed.push_back(current_node);
+		}
+
+		// Found the destination
+		if (current_node->get_pos() == destination_node->get_pos())
+		{
+			while (current_node != nullptr)
+			{
+				path.push(current_node->get_pos());
+				current_node = current_node->parent;
+			}
+
+			draw_path(path);
+			running = false; // This should be the last command
+			return;
+		}
+
+		std::vector<Node*> children;
+		int curr_x = current_node->get_pos().x;
+		int curr_y = current_node->get_pos().y;
+
+		// Verticals
+		if (curr_y + 1 < grid_height && grid[curr_x][curr_y + 1]->get_state() != NodeState::wall)
+		{
+			children.push_back(new Node(sf::Vector2i(curr_x, curr_y + 1), current_node));
+		}
+		if (curr_y - 1 >= 0 && grid[curr_x][curr_y - 1]->get_state() != NodeState::wall)
+		{
+			children.push_back(new Node(sf::Vector2i(curr_x, curr_y - 1),current_node));
+		}
+
+		// Horizontals
+		if (curr_x - 1 >= 0 && grid[curr_x - 1][curr_y]->get_state() != NodeState::wall)
+		{
+			children.push_back(new Node(sf::Vector2i(curr_x - 1, curr_y), current_node));
+		}
+		if (curr_x + 1 < grid_width && grid[curr_x + 1][curr_y]->get_state() != NodeState::wall)
+		{
+			children.push_back(new Node(sf::Vector2i(curr_x + 1, curr_y), current_node));
+		}
+
+		// Diagonals
+		if (
+			curr_x + 1 < grid_width && curr_y + 1 < grid_height &&
+			grid[curr_x + 1][curr_y + 1]->get_state() != NodeState::wall
+			)
+		{
+			children.push_back(new Node(sf::Vector2i(curr_x + 1, curr_y + 1), current_node));
+		}
+		if (
+			curr_x - 1 >= 0 && curr_y - 1 >= 0 &&
+			grid[curr_x - 1][curr_y - 1]->get_state() != NodeState::wall
+			) 
+		{
+			children.push_back(new Node(sf::Vector2i(curr_x - 1, curr_y - 1), current_node));
+		}
+		if (curr_y - 1 >= 0 &&
+			curr_x + 1 < grid_width &&
+			grid[curr_x + 1][curr_y - 1]->get_state() != NodeState::wall
+			)
+		{
+			children.push_back(new Node(sf::Vector2i(curr_x + 1, curr_y - 1), current_node));
+		}
+		if (
+			curr_x - 1 >= 0 &&
+			curr_y + 1 < grid_height &&
+			grid[curr_x - 1][curr_y + 1]->get_state() != NodeState::wall
+			)
+		{
+			children.push_back(new Node(sf::Vector2i(curr_x - 1, curr_y + 1), current_node));
+		}
+
+		// Loop through children
+		for (Node* child : children)
+		{
+			bool skip_child = false;
+			for (Node* closed_child : closed)
+			{
+				if (child->get_pos() == closed_child->get_pos())
+				{
+					skip_child = true;
+					break;
+				}
+			}
+			if (skip_child) continue;
+
+			child->g = child->parent->g + 1;
+			child->calculate_f();
+
+			for (Node* open_node : open)
+			{
+				if (open_node->get_pos() == child->get_pos()/* && child->f > open_node->f*/)
+				{
+					skip_child = true;
+					break;
+				}
+			}
+
+			if (skip_child) continue;
+
+			grid[child->get_pos().x][child->get_pos().y]->set_state(NodeState::unvisited);
+			open.push_back(child);
+		}
+
+	}
+
+	running = false;
+}
+
+void Grid::draw_path(std::stack<sf::Vector2i> path)
+{
+	while (!path.empty())
+	{
+		grid[path.top().x][path.top().y]->set_state(NodeState::path);
+		path.pop();
+	}
+}
+
+void Grid::clear_grid()
+{
+	for (int i = 0; i < grid_width; i++)
+	{
+		for (int j = 0; j < grid_height; j++)
+		{
+			if(grid[i][j]->get_state() == NodeState::unvisited ||
+				grid[i][j]->get_state() == NodeState::visited ||
+				grid[i][j]->get_state() == NodeState::path)
+				grid[i][j]->set_state(NodeState::open);
+		}
+	}
 }
 
 // Setters
-void Grid::set_node_state(int x, int y, NodeState state)
+void Grid::set_node_state(sf::Vector2i pos, NodeState state)
 {
-	grid[x][y]->set_state(state);
+	grid[pos.x][pos.y]->set_state(state);
 	if (state == NodeState::start) {
 
 		// sets the old start position as NodeState::open instead of NodeState::start
-		if (start_pos.x != -1 || start_pos.y != -1)
+		if ((start_pos.x != -1 || start_pos.y != -1) && pos != start_pos)
 			grid[start_pos.x][start_pos.y]->set_state(NodeState::open);
 
-		start_pos = sf::Vector2i(x, y);
+		start_pos = pos;
 	}
 	else if (state == NodeState::destination) {
 
 		// sets the old destination position as NodeState::open instead of NodeState::destination
-		if (destination_pos.x != -1 || destination_pos.y != -1) 
+		if ((destination_pos.x != -1 || destination_pos.y != -1 ) && pos != destination_pos)
 			grid[destination_pos.x][destination_pos.y]->set_state(NodeState::open);
 
-		destination_pos = sf::Vector2i(x, y);
+		destination_pos = pos;
 	}
 }
 
@@ -248,12 +401,12 @@ const int Grid::get_height()
 
 const int Grid::get_rect_width()
 {
-	return 50;
+	return 25;
 }
 
 const int Grid::get_rect_height()
 {
-	return 50;
+	return 25;
 }
 
 const sf::Vector2i Grid::get_mouse_pos_in_grid(sf::Vector2i mouse_pos)

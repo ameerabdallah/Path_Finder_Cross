@@ -1,9 +1,11 @@
 #pragma once
 enum class NodeState
 {
-	open,			// white
-	wall,			// dark grey
-	start,			// cyan
-	destination,	// yellow
-	path			// green
+	open,			// WHITE
+	wall,			// GREY
+	start,			// CYAN
+	destination,	// CYAN
+	unvisited,		// RED
+	visited,		// GREEN
+	path,			// CYAN
 };
