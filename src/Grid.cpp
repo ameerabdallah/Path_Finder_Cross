@@ -40,11 +40,6 @@ void Grid::init_grid()
 	update_grid_layout();
 }
 
-Node Grid::get_node(int x, int y)
-{
-	return *grid[x][y];
-}
-
 /* This function resizes the grid while maintaining
    the information held in the old grid, that way
    information about the states of each Node don't
@@ -204,7 +199,7 @@ void Grid::run_a_star()
 	while (!open.empty())
 	{
 		current_node = open[0];
-		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
 		int current_index = 0, index = 0;
 		for (Node* node : open)
@@ -334,11 +329,11 @@ void Grid::run_a_star()
 
 			grid[child->get_pos().x][child->get_pos().y]->set_state(NodeState::unvisited);
 			open.push_back(child);
-			std::cout << open.size() / sizeof(Node) << std::endl;
 		}
 
 	}
 
+	running = false;
 }
 
 void Grid::draw_path(std::stack<sf::Vector2i> path)
@@ -365,24 +360,24 @@ void Grid::clear_grid()
 }
 
 // Setters
-void Grid::set_node_state(int x, int y, NodeState state)
+void Grid::set_node_state(sf::Vector2i pos, NodeState state)
 {
-	grid[x][y]->set_state(state);
+	grid[pos.x][pos.y]->set_state(state);
 	if (state == NodeState::start) {
 
 		// sets the old start position as NodeState::open instead of NodeState::start
-		if (start_pos.x != -1 || start_pos.y != -1)
+		if ((start_pos.x != -1 || start_pos.y != -1) && pos != start_pos)
 			grid[start_pos.x][start_pos.y]->set_state(NodeState::open);
 
-		start_pos = sf::Vector2i(x, y);
+		start_pos = pos;
 	}
 	else if (state == NodeState::destination) {
 
 		// sets the old destination position as NodeState::open instead of NodeState::destination
-		if (destination_pos.x != -1 || destination_pos.y != -1) 
+		if ((destination_pos.x != -1 || destination_pos.y != -1 ) && pos != destination_pos)
 			grid[destination_pos.x][destination_pos.y]->set_state(NodeState::open);
 
-		destination_pos = sf::Vector2i(x, y);
+		destination_pos = pos;
 	}
 }
 
@@ -406,12 +401,12 @@ const int Grid::get_height()
 
 const int Grid::get_rect_width()
 {
-	return 50;
+	return 25;
 }
 
 const int Grid::get_rect_height()
 {
-	return 50;
+	return 25;
 }
 
 const sf::Vector2i Grid::get_mouse_pos_in_grid(sf::Vector2i mouse_pos)

@@ -64,9 +64,6 @@ public:
 	// the Node objects
 	void init_grid();
 
-	// Returns the node at a position given
-	Node get_node(int x, int y);
-
 	/* This function resizes the grid while maintaining
 		the information held in the old grid, that way
 		information about the NodeState for each Node
@@ -96,7 +93,7 @@ public:
 	void clear_grid();
 
 	// Setters
-	void set_node_state(int x, int y, NodeState state);
+	void set_node_state(sf::Vector2i pos, NodeState state);
 
 	// Getters
 	const bool is_running();

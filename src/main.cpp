@@ -9,7 +9,7 @@ int main()
 	NodeState brushState = NodeState::open;
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Path Finder", sf::Style::Close);
 
-	Grid grid(&window, 10, 10);
+	Grid grid(&window, 20, 20);
 	window.setVerticalSyncEnabled(true);
 	window.setKeyRepeatEnabled(false);
 	std::thread t1;
@@ -60,7 +60,7 @@ int main()
 				case(sf::Keyboard::Down): // Down arrow: Make grid larger vertically (limit at 20
 
 					// Upper Bounderies for y component
-					if (grid.get_height() + 1 <= 20)
+					if (grid.get_height() + 1 <= 100)
 					{
 						grid.resize(grid.get_width(), grid.get_height() + 1);
 						window.setSize(sf::Vector2u(window.getSize().x, window.getSize().y + grid.get_rect_height()));
@@ -80,7 +80,7 @@ int main()
 				case(sf::Keyboard::Right): // Right arrow: Make grid larger horizontally (limit at 30)
 
 					// Upper Bounderies for x component
-					if (grid.get_width() + 1 <= 30)
+					if (grid.get_width() + 1 <= 100)
 					{
 						grid.resize(grid.get_width() + 1, grid.get_height());
 						window.setSize(sf::Vector2u(window.getSize().x + grid.get_rect_width(), window.getSize().y));
@@ -112,30 +112,47 @@ int main()
 				}
 			}
 
-			// If the mouse button is pressed and it's not looking for the best path (edit mode)
-			if(event.type == sf::Event::MouseButtonPressed && !grid.is_running())
+			// Set up
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !grid.is_running())
+				//(brushState != NodeState::start && brushState != NodeState::destination))
 			{
 
-				if (event.mouseButton.button == sf::Mouse::Left) 
+				if (sf::Mouse::getPosition(window).x <= window.getSize().x && sf::Mouse::getPosition(window).y <= window.getSize().y)
 				{
 
-					if (sf::Mouse::getPosition(window).x <= window.getSize().x && sf::Mouse::getPosition(window).y <= window.getSize().y) 
-					{
-
-						sf::Vector2i mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
-						int x = mouse_pos.x;
-						int y = mouse_pos.y;
-						grid.set_node_state(x, y, brushState); // Set to whatever brush state is
-
-					}
+					sf::Vector2i mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
+					int x = mouse_pos.x;
+					int y = mouse_pos.y;
+					grid.set_node_state(sf::Vector2i(x, y), brushState);
 
 				}
 
 			}
+
+			//// Limits the brush to clicking once and thats all
+			//if(event.type == sf::Event::MouseButtonPressed && !grid.is_running() && 
+			//	(brushState == NodeState::start || brushState == NodeState::destination))
+			//{
+
+			//	if (event.mouseButton.button == sf::Mouse::Left && !grid.is_running())
+			//	{
+
+			//		if (sf::Mouse::getPosition(window).x <= window.getSize().x && sf::Mouse::getPosition(window).y <= window.getSize().y)
+			//		{
+
+			//			sf::Vector2i mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
+			//			int x = mouse_pos.x;
+			//			int y = mouse_pos.y;
+			//			grid.set_node_state(x, y, brushState);
+
+			//		}
+
+			//	}
+
+			//}
 			
 		}
 
-		// check_input(brushState, window, grid);
 		window.clear();
 		grid.draw_grid();
 		window.display();
