@@ -20,34 +20,36 @@ private:
 
 	NodeState state;	// State of Node
 
-	sf::Vector2i position;	// Position of vector
+	sf::Vector2i pos;	// Position of vector
 
-	float s_cost;			// distance from this node to start position
-	float d_cost;			// distance from this node to distance position
-	float t_cost;			// sum of s_cost and d_cost
 
 public:
+	Node* parent;
 	
+	float g;			// distance from this node to start position
+	float h;			// distance from this node to distance position
+	float f;			// sum of g and h
+
 	// Constructor
-	Node(int x, int y);
+	Node(sf::Vector2i pos = sf::Vector2i(0, 0), Node* parent = nullptr);
+
+	// Calculators
+	void calculate_h(sf::Vector2i distance);
+	void calculate_f();
 
 	// Setters
+	void set_pos(sf::Vector2i pos);
 	void set_state(NodeState state);
 	void set_rect_color(sf::Color color);
 	void set_rect_position(sf::Vector2f position);
 	void set_rect_size(sf::Vector2f size);
-	void set_s_cost(sf::Vector2i start);
-	void set_d_cost(sf::Vector2i distance);
-	void set_t_cost();
 
 	// Getters
+	const sf::Vector2i get_pos();
 	const NodeState get_state();
 	const sf::Color get_rect_color();
 	const sf::Vector2f get_rect_position();
 	const sf::Vector2f get_rect_size();
 	const sf::RectangleShape get_rectangle();
-	const float get_s_cost();
-	const float get_d_cost();
-	const float get_t_cost();
 };
 

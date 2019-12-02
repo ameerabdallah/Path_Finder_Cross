@@ -2,6 +2,7 @@
 #include "Grid.h"
 #include "SFML/Window/Mouse.hpp"
 #include <iostream>
+#include <thread>
 
 int main()
 {
@@ -11,6 +12,7 @@ int main()
 	Grid grid(&window, 10, 10);
 	window.setVerticalSyncEnabled(true);
 	window.setKeyRepeatEnabled(false);
+	std::thread t1;
 
 	while (window.isOpen())
 	{
@@ -96,8 +98,16 @@ int main()
 					break;
 
 				case(sf::Keyboard::Enter): // Enter/Return: start the program
+					t1 = std::thread(&Grid::run_a_star, &grid);
+					t1.detach();
+					break;
 
-					grid.run_a_star();
+				case(sf::Keyboard::C):
+					grid.clear_grid();
+					break;
+
+				case(sf::Keyboard::I):
+					grid.init_grid();
 					break;
 				}
 			}

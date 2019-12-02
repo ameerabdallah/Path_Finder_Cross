@@ -1,6 +1,10 @@
 #pragma once
 #include <vector>
+#include <list>
+#include <stack>
+#include <algorithm>
 #include "Node.h"
+#include <iostream>
 #include "SFML/Window/Mouse.hpp"
 
 
@@ -77,13 +81,19 @@ public:
 	void draw_grid();
 
 	// calculate each node's s_cost, f_cost and t_cost
-	void calculate_node_costs();
+	void calculate_all_h_cost();
 
 	// check if the destination_pos and start_pos are within the bounds of the grid
 	void fix_dest_start_positions();
 
 	// A* Algorithm for finding the fastest path between the start_pos and destination_pos
 	void run_a_star();
+
+	// Sets all of the nodes in the path to NodeState::path
+	void draw_path(std::stack<sf::Vector2i> path);
+
+	// clear the grid
+	void clear_grid();
 
 	// Setters
 	void set_node_state(int x, int y, NodeState state);
@@ -95,10 +105,5 @@ public:
 	const int get_rect_width();
 	const int get_rect_height();
 	const sf::Vector2i get_mouse_pos_in_grid(sf::Vector2i mouse_pos);
-
-	/*
-		TODO:
-		- Start working on the algorithm
-	*/
 
 };

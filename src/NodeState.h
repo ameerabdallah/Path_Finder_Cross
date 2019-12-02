@@ -5,5 +5,7 @@ enum class NodeState
 	wall,			// dark grey
 	start,			// cyan
 	destination,	// yellow
-	path			// green
+	unvisited,
+	visited,
+	path,			// green
 };
