@@ -3,12 +3,27 @@
 #include "SFML/Window/Mouse.hpp"
 #include <iostream>
 #include <thread>
+#include <SFML/Audio.hpp>
+#include <string>
 
 int main()
 {
 	NodeState brushState = NodeState::open;
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Path Finder", sf::Style::Close);
+    
+    
+      std::string file_name = "/../../../../../res/startsound.wav/";
+      
+      sf::SoundBuffer buffer;
+      buffer.loadFromFile(file_name);
+       
+      sf::Sound sound;
+       
+      sound.setBuffer(buffer);
+      
+      sound.play();
 
+    
 	Grid grid(&window, 20, 20);
 	window.setVerticalSyncEnabled(true);
 	window.setKeyRepeatEnabled(false);
