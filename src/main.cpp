@@ -6,6 +6,7 @@
 #include <SFML/Audio.hpp>
 #include <string>
 
+
 int main()
 {
 	NodeState brushState = NodeState::open;
@@ -20,8 +21,6 @@ int main()
       sf::Sound sound;
        
       sound.setBuffer(buffer);
-      
-      sound.play();
 
     
 	Grid grid(&window, 20, 20);
@@ -129,42 +128,20 @@ int main()
 
 			// Set up
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !grid.is_running())
-				//(brushState != NodeState::start && brushState != NodeState::destination))
 			{
 
 				if (sf::Mouse::getPosition(window).x <= window.getSize().x && sf::Mouse::getPosition(window).y <= window.getSize().y)
 				{
-
+                    
 					sf::Vector2i mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
 					int x = mouse_pos.x;
 					int y = mouse_pos.y;
 					grid.set_node_state(sf::Vector2i(x, y), brushState);
-
+                    if(brushState == NodeState::wall) sound.play();
 				}
 
 			}
 
-			//// Limits the brush to clicking once and thats all
-			//if(event.type == sf::Event::MouseButtonPressed && !grid.is_running() && 
-			//	(brushState == NodeState::start || brushState == NodeState::destination))
-			//{
-
-			//	if (event.mouseButton.button == sf::Mouse::Left && !grid.is_running())
-			//	{
-
-			//		if (sf::Mouse::getPosition(window).x <= window.getSize().x && sf::Mouse::getPosition(window).y <= window.getSize().y)
-			//		{
-
-			//			sf::Vector2i mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
-			//			int x = mouse_pos.x;
-			//			int y = mouse_pos.y;
-			//			grid.set_node_state(x, y, brushState);
-
-			//		}
-
-			//	}
-
-			//}
 			
 		}
 

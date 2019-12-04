@@ -397,6 +397,12 @@ const int Grid::get_width()
 	return grid_width;
 }
 
+
+const NodeState Grid::get_node_state(sf::Vector2i pos)
+{
+    return grid[pos.x][pos.y]->get_state();
+}
+
 const int Grid::get_height()
 {
 	return grid_height;

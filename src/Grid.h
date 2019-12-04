@@ -101,6 +101,7 @@ public:
 	const int get_height();
 	const int get_rect_width();
 	const int get_rect_height();
+    const NodeState get_node_state(sf::Vector2i pos);
 	const sf::Vector2i get_mouse_pos_in_grid(sf::Vector2i mouse_pos);
 
 };
