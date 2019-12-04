@@ -1,6 +1,8 @@
 #include "Grid.h"
 #include <thread>
 
+#define llint long long int
+
 
 // Constructor
 Grid::Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_height)
@@ -16,7 +18,7 @@ Grid::Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_
 	this->grid_height = grid_height;
 	
 	grid.resize(grid_width);
-	for (int i = 0; i < grid_width; i++)
+	for (int i = 0; i < grid_width; i++) //
 	{
 		grid[i].resize(grid_height);
 	}
@@ -222,6 +224,7 @@ void Grid::run_a_star()
 				skip_push_back = true;
 				break;
 			}
+
 		}
 
 		if (!skip_push_back)
@@ -249,21 +252,21 @@ void Grid::run_a_star()
 		int curr_y = current_node->get_pos().y;
 
 		// Verticals
-		if (curr_y + 1 < grid_height && grid[curr_x][curr_y + 1]->get_state() != NodeState::wall)
+		if (curr_y + 1 < grid_height && grid[curr_x][(llint)curr_y + 1]->get_state() != NodeState::wall)
 		{
 			children.push_back(new Node(sf::Vector2i(curr_x, curr_y + 1), current_node));
 		}
-		if (curr_y - 1 >= 0 && grid[curr_x][curr_y - 1]->get_state() != NodeState::wall)
+		if (curr_y - 1 >= 0 && grid[curr_x][(llint)curr_y - 1]->get_state() != NodeState::wall)
 		{
 			children.push_back(new Node(sf::Vector2i(curr_x, curr_y - 1),current_node));
 		}
 
 		// Horizontals
-		if (curr_x - 1 >= 0 && grid[curr_x - 1][curr_y]->get_state() != NodeState::wall)
+		if (curr_x - 1 >= 0 && grid[(llint)curr_x - 1][curr_y]->get_state() != NodeState::wall)
 		{
 			children.push_back(new Node(sf::Vector2i(curr_x - 1, curr_y), current_node));
 		}
-		if (curr_x + 1 < grid_width && grid[curr_x + 1][curr_y]->get_state() != NodeState::wall)
+		if (curr_x + 1 < grid_width && grid[(llint)curr_x + 1][curr_y]->get_state() != NodeState::wall)
 		{
 			children.push_back(new Node(sf::Vector2i(curr_x + 1, curr_y), current_node));
 		}
@@ -271,21 +274,21 @@ void Grid::run_a_star()
 		// Diagonals
 		if (
 			curr_x + 1 < grid_width && curr_y + 1 < grid_height &&
-			grid[curr_x + 1][curr_y + 1]->get_state() != NodeState::wall
+			grid[(llint)curr_x + 1][(llint)curr_y + 1]->get_state() != NodeState::wall
 			)
 		{
 			children.push_back(new Node(sf::Vector2i(curr_x + 1, curr_y + 1), current_node));
 		}
 		if (
 			curr_x - 1 >= 0 && curr_y - 1 >= 0 &&
-			grid[curr_x - 1][curr_y - 1]->get_state() != NodeState::wall
+			grid[(llint)curr_x - 1][(llint)curr_y - 1]->get_state() != NodeState::wall
 			) 
 		{
 			children.push_back(new Node(sf::Vector2i(curr_x - 1, curr_y - 1), current_node));
 		}
 		if (curr_y - 1 >= 0 &&
 			curr_x + 1 < grid_width &&
-			grid[curr_x + 1][curr_y - 1]->get_state() != NodeState::wall
+			grid[(llint)curr_x + 1][(llint)curr_y - 1]->get_state() != NodeState::wall
 			)
 		{
 			children.push_back(new Node(sf::Vector2i(curr_x + 1, curr_y - 1), current_node));
@@ -293,7 +296,7 @@ void Grid::run_a_star()
 		if (
 			curr_x - 1 >= 0 &&
 			curr_y + 1 < grid_height &&
-			grid[curr_x - 1][curr_y + 1]->get_state() != NodeState::wall
+			grid[(llint)curr_x - 1][(llint)curr_y + 1]->get_state() != NodeState::wall
 			)
 		{
 			children.push_back(new Node(sf::Vector2i(curr_x - 1, curr_y + 1), current_node));

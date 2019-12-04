@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Grid.h"
-#include "SFML/Window/Mouse.hpp"
+#include <SFML/Window/Mouse.hpp>
 #include <iostream>
 #include <thread>
 #include <SFML/Audio.hpp>
@@ -12,7 +12,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Path Finder", sf::Style::Close);
     
     
-      std::string file_name = "/../../../../../res/startsound.wav/";
+      std::string file_name = "../../../res/startsound.wav";
       
       sf::SoundBuffer buffer;
       buffer.loadFromFile(file_name);
