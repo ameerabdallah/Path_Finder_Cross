@@ -69,7 +69,10 @@ int main()
 
 					brushState = NodeState::destination;
 					break;
-
+				
+				case(sf::Keyboard::Tab):
+					grid.toggle_slow_solve();
+					break;
 
 				case(sf::Keyboard::Down): // Down arrow: Make grid larger vertically (limit at 20
 

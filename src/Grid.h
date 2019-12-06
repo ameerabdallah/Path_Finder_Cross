@@ -52,7 +52,8 @@ private:
 	sf::Vector2i start_pos = sf::Vector2i(-1,-1);			// position of the node that holds the NodeState::start (there can only be 1)
 	sf::Vector2i destination_pos = sf::Vector2i(-1, -1);	// position of the node that holds the NodeState::destination (there can only be 1)
 
-	bool running = false;	// Flag for if the best path is currently being looked for
+	bool running = false,
+		slow_solve = false;	// Flag for if the best path is currently being looked for
 
 	sf::RenderWindow* window;	// main window for the program
 
@@ -94,6 +95,7 @@ public:
 
 	// Setters
 	void set_node_state(sf::Vector2i pos, NodeState state);
+	void toggle_slow_solve();
 
 	// Getters
 	const bool is_running();

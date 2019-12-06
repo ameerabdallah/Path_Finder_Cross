@@ -18,7 +18,7 @@ Grid::Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_
 	this->grid_height = grid_height;
 	
 	grid.resize(grid_width);
-	for (int i = 0; i < grid_width; i++) //
+	for (int i = 0; i < grid_width; i++)
 	{
 		grid[i].resize(grid_height);
 	}
@@ -39,6 +39,8 @@ void Grid::init_grid()
 			grid[x][y] = new Node(sf::Vector2i(x, y));
 		}
 	}
+	start_pos = sf::Vector2i(-1, -1);
+	destination_pos = sf::Vector2i(-1, -1);
 	update_grid_layout();
 }
 
@@ -201,7 +203,8 @@ void Grid::run_a_star()
 	while (!open.empty())
 	{
 		current_node = open[0];
-		//std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		if(slow_solve)
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
 		int current_index = 0, index = 0;
 		for (Node* node : open)
@@ -348,6 +351,8 @@ void Grid::draw_path(std::stack<sf::Vector2i> path)
 	}
 }
 
+
+
 void Grid::clear_grid()
 {
 	for (int i = 0; i < grid_width; i++)
@@ -382,6 +387,11 @@ void Grid::set_node_state(sf::Vector2i pos, NodeState state)
 
 		destination_pos = pos;
 	}
+}
+
+void Grid::toggle_slow_solve()
+{
+	slow_solve = !slow_solve;
 }
 
 
