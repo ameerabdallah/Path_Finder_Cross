@@ -44,13 +44,13 @@ class Grid
 private:
 	std::vector< std::vector < Node* > > grid; // 2d vector of Nodes
 
-	unsigned int w_width = 0,	// width of the open window
+	std::int8_t w_width = 0,	// width of the open window
 			w_height = 0,		// height of the open window
 			grid_width = 0,		// width of grid
 			grid_height = 0;	// height of grid
 
-	sf::Vector2i start_pos = sf::Vector2i(-1,-1);			// position of the node that holds the NodeState::start (there can only be 1)
-	sf::Vector2i destination_pos = sf::Vector2i(-1, -1);	// position of the node that holds the NodeState::destination (there can only be 1)
+	sf::Vector2<std::int8_t> start_pos = sf::Vector2<std::int8_t>(-1,-1);			// position of the node that holds the NodeState::start (there can only be 1)
+	sf::Vector2<std::int8_t> destination_pos = sf::Vector2<std::int8_t>(-1, -1);	// position of the node that holds the NodeState::destination (there can only be 1)
 
 	bool running = false,
 		slow_solve = false;	// Flag for if the best path is currently being looked for
@@ -58,7 +58,7 @@ private:
 	sf::RenderWindow* window;	// main window for the program
 
 public:
-	Grid(sf::RenderWindow* window, unsigned int grid_width, unsigned int grid_height);
+	Grid(sf::RenderWindow* window, std::int8_t grid_width, std::int8_t grid_height);
 	
 	// init_grid() initializes the grid with new Node objects
 	// calls update_grid_layout() to set the size and position of
@@ -70,7 +70,7 @@ public:
 		information about the NodeState for each Node
 		object isn't lost.
 	*/
-	void resize(int width, int height);
+	void resize(std::int8_t width, std::int8_t height);
 
 	// USE UPDATE_GRID_LAYOUT BEFORE DRAWING GRID IF GRID WAS CHANGED
 	void update_grid_layout();
@@ -88,13 +88,18 @@ public:
 	void run_a_star();
 
 	// Sets all of the nodes in the path to NodeState::path
-	void draw_path(std::stack<sf::Vector2i> path);
+	void draw_path(std::stack<sf::Vector2<std::int8_t>> path);
 
 	// clear the grid
 	void clear_grid();
 
+	// normalize the color to it's respective NodeState
+	void normalize_node_color(sf::Vector2<std::int8_t> pos);
+
 	// Setters
-	void set_node_state(sf::Vector2i pos, NodeState state);
+	void set_node_state(sf::Vector2<std::int8_t> pos, NodeState state);
+	void set_node_color(sf::Vector2<std::int8_t> pos, sf::Color color);
+	void set_running(bool running);
 	void toggle_slow_solve();
 
 	// Getters
@@ -103,7 +108,7 @@ public:
 	const int get_height();
 	const int get_rect_width();
 	const int get_rect_height();
-    const NodeState get_node_state(sf::Vector2i pos);
-	const sf::Vector2i get_mouse_pos_in_grid(sf::Vector2i mouse_pos);
+    const NodeState get_node_state(sf::Vector2<std::int8_t> pos);
+	const sf::Vector2<std::int8_t> get_mouse_pos_in_grid(sf::Vector2i mouse_pos);
 
 };

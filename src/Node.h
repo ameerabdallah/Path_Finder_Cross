@@ -20,7 +20,7 @@ private:
 
 	NodeState state;	// State of Node
 
-	sf::Vector2i pos;	// Position of vector
+	sf::Vector2<std::int8_t> pos;	// Position of vector
 
 
 public:
@@ -31,21 +31,21 @@ public:
 	float f;			// sum of g and h
 
 	// Constructor
-	Node(sf::Vector2i pos = sf::Vector2i(0, 0), Node* parent = nullptr);
+	Node(sf::Vector2<std::int8_t> pos = sf::Vector2<std::int8_t>(0,0), Node* parent = nullptr);
 
 	// Calculators
-	void calculate_h(sf::Vector2i distance);
+	void calculate_h(sf::Vector2<std::int8_t> distance);
 	void calculate_f();
 
 	// Setters
-	void set_pos(sf::Vector2i pos);
+	void set_pos(sf::Vector2<std::int8_t> pos);
 	void set_state(NodeState state);
 	void set_rect_color(sf::Color color);
 	void set_rect_position(sf::Vector2f position);
 	void set_rect_size(sf::Vector2f size);
 
 	// Getters
-	const sf::Vector2i get_pos();
+	const sf::Vector2<std::int8_t> get_pos();
 	const NodeState get_state();
 	const sf::Color get_rect_color();
 	const sf::Vector2f get_rect_position();
