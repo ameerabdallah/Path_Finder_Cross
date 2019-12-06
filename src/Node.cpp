@@ -4,12 +4,12 @@
 #include "Node.h"
 
 // Constructor
-Node::Node(sf::Vector2i pos, Node* parent)
+Node::Node(sf::Vector2<std::int8_t> pos, Node* parent)
 {
 	this->parent = parent;
 	this->pos = pos;
 	rect.setOutlineColor(sf::Color::Black);
-	rect.setOutlineThickness(0.5f);
+	rect.setOutlineThickness(1.0f);
 	set_state(NodeState::open);
 	g = 0;
 	h = 0;
@@ -17,7 +17,7 @@ Node::Node(sf::Vector2i pos, Node* parent)
 }
 
 // Calculators
-void Node::calculate_h(sf::Vector2i destination)
+void Node::calculate_h(sf::Vector2<std::int8_t> destination)
 {
 	// the deltas are the distances between the respective coordinate
 	float delta_x = destination.x - pos.x;
@@ -32,7 +32,7 @@ void Node::calculate_f()
 }
 
 
-void Node::set_pos(sf::Vector2i pos)
+void Node::set_pos(sf::Vector2<std::int8_t> pos)
 {
 	this->pos = pos;
 }
@@ -44,25 +44,39 @@ void Node::set_state(NodeState state)
 	switch (state)
 	{
 	case NodeState::open:
-		rect.setFillColor(sf::Color::Color(190, 190, 190));
+		rect.setFillColor(sf::Color(190, 190, 190));
+		rect.setOutlineColor(sf::Color::Black);
+		rect.setOutlineThickness(1.0f);
 		break;
 	case NodeState::wall:
 		rect.setFillColor(sf::Color(10, 10, 10));
+		rect.setOutlineColor(sf::Color(10,10,10));
+		rect.setOutlineThickness(1.0f);
 		break;
 	case NodeState::start:
 		rect.setFillColor(sf::Color::Blue);
+		rect.setOutlineColor(sf::Color::Black);
+		rect.setOutlineThickness(1.0f);
 		break;
 	case NodeState::destination:
 		rect.setFillColor(sf::Color::Magenta);
+		rect.setOutlineColor(sf::Color::Black);
+		rect.setOutlineThickness(1.0f);
 		break;
 	case NodeState::path:
 		rect.setFillColor(sf::Color::Blue);
+		rect.setOutlineColor(sf::Color::White);
+		rect.setOutlineThickness(1.0f);
 		break;
 	case NodeState::visited:
-		rect.setFillColor(sf::Color::Color(190, 0, 0));
+		rect.setFillColor(sf::Color(190, 0, 0));
+		rect.setOutlineColor(sf::Color::Black);
+		rect.setOutlineThickness(1.0f);
 		break;
 	case NodeState::unvisited:
-		rect.setFillColor(sf::Color::Color(0, 190, 0));
+		rect.setFillColor(sf::Color(0, 190, 0));
+		rect.setOutlineColor(sf::Color::Black);
+		rect.setOutlineThickness(1.0f);
 		break;
 	}
 }
@@ -82,12 +96,14 @@ void Node::set_rect_size(sf::Vector2f size)
 	rect.setSize(size);
 }
 
-const sf::Vector2i Node::get_pos()
+
+
+// Getters
+const sf::Vector2<std::int8_t> Node::get_pos()
 {
 	return pos;
 }
 
-// Getters
 const NodeState Node::get_state()
 {
 	return state;

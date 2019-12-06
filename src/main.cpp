@@ -12,8 +12,8 @@ int main()
 	NodeState brushState = NodeState::open;
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Path Finder", sf::Style::Close);
     
-	sf::Vector2i mouse_pos = sf::Vector2i(0, 0);
-	sf::Vector2i last_pos = sf::Vector2i(0,0);
+	sf::Vector2<std::int8_t> mouse_pos = sf::Vector2<std::int8_t>(0, 0);
+	sf::Vector2<std::int8_t> last_pos = sf::Vector2<std::int8_t>(0,0);
 
     std::string file_name = "../../../res/startsound.wav";
     
