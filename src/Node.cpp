@@ -9,7 +9,7 @@ Node::Node(sf::Vector2i pos, Node* parent)
 	this->parent = parent;
 	this->pos = pos;
 	rect.setOutlineColor(sf::Color::Black);
-	rect.setOutlineThickness(1.6f);
+	rect.setOutlineThickness(0.5f);
 	set_state(NodeState::open);
 	g = 0;
 	h = 0;
@@ -44,25 +44,25 @@ void Node::set_state(NodeState state)
 	switch (state)
 	{
 	case NodeState::open:
-		rect.setFillColor(sf::Color::White);			// set rect to white
+		rect.setFillColor(sf::Color::Color(190, 190, 190));
 		break;
 	case NodeState::wall:
-		rect.setFillColor(sf::Color(30, 30, 30));		// set rect to dark grey
+		rect.setFillColor(sf::Color(10, 10, 10));
 		break;
 	case NodeState::start:
-		rect.setFillColor(sf::Color::Cyan);				// set rect to cyan
+		rect.setFillColor(sf::Color::Blue);
 		break;
 	case NodeState::destination:
-		rect.setFillColor(sf::Color::Cyan);			// set rect to yellow
+		rect.setFillColor(sf::Color::Magenta);
 		break;
 	case NodeState::path:
-		rect.setFillColor(sf::Color::Cyan);			// set rect to green
+		rect.setFillColor(sf::Color::Blue);
 		break;
 	case NodeState::visited:
-		rect.setFillColor(sf::Color::Red);
+		rect.setFillColor(sf::Color::Color(190, 0, 0));
 		break;
 	case NodeState::unvisited:
-		rect.setFillColor(sf::Color::Green);
+		rect.setFillColor(sf::Color::Color(0, 190, 0));
 		break;
 	}
 }

@@ -93,8 +93,13 @@ public:
 	// clear the grid
 	void clear_grid();
 
+	// normalize the color to it's respective NodeState
+	void normalize_node_color(sf::Vector2i pos);
+
 	// Setters
 	void set_node_state(sf::Vector2i pos, NodeState state);
+	void set_node_color(sf::Vector2i pos, sf::Color color);
+	void set_running(bool running);
 	void toggle_slow_solve();
 
 	// Getters

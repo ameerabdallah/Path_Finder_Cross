@@ -246,7 +246,6 @@ void Grid::run_a_star()
 			}
 
 			draw_path(path);
-			running = false; // This should be the last command
 			return;
 		}
 
@@ -339,7 +338,6 @@ void Grid::run_a_star()
 
 	}
 
-	running = false;
 }
 
 void Grid::draw_path(std::stack<sf::Vector2i> path)
@@ -367,6 +365,11 @@ void Grid::clear_grid()
 	}
 }
 
+void Grid::normalize_node_color(sf::Vector2i pos)
+{
+	grid[pos.x][pos.y]->set_state(grid[pos.x][pos.y]->get_state());
+}
+
 // Setters
 void Grid::set_node_state(sf::Vector2i pos, NodeState state)
 {
@@ -387,6 +390,16 @@ void Grid::set_node_state(sf::Vector2i pos, NodeState state)
 
 		destination_pos = pos;
 	}
+}
+
+void Grid::set_node_color(sf::Vector2i pos,sf::Color color)
+{
+	grid[pos.x][pos.y]->set_rect_color(color);
+}
+
+void Grid::set_running(bool running)
+{
+	this->running = running;
 }
 
 void Grid::toggle_slow_solve()

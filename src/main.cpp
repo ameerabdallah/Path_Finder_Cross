@@ -12,15 +12,17 @@ int main()
 	NodeState brushState = NodeState::open;
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Path Finder", sf::Style::Close);
     
+	sf::Vector2i mouse_pos = sf::Vector2i(0, 0);
+	sf::Vector2i last_pos = sf::Vector2i(0,0);
+
+    std::string file_name = "../../../res/startsound.wav";
     
-      std::string file_name = "../../../res/startsound.wav";
-      
-      sf::SoundBuffer buffer;
-      buffer.loadFromFile(file_name);
-       
-      sf::Sound sound;
-       
-      sound.setBuffer(buffer);
+    sf::SoundBuffer buffer;
+    buffer.loadFromFile(file_name);
+     
+    sf::Sound sound;
+     
+    sound.setBuffer(buffer);
 
     
 	Grid grid(&window, 20, 20);
@@ -74,7 +76,7 @@ int main()
 					grid.toggle_slow_solve();
 					break;
 
-				case(sf::Keyboard::Down): // Down arrow: Make grid larger vertically (limit at 20
+				case(sf::Keyboard::Down): // Down arrow: Make grid larger vertically (limit at 100)
 
 					// Upper Bounderies for y component
 					if (grid.get_height() + 1 <= 100)
@@ -94,7 +96,7 @@ int main()
 					}
 
 					break;
-				case(sf::Keyboard::Right): // Right arrow: Make grid larger horizontally (limit at 30)
+				case(sf::Keyboard::Right): // Right arrow: Make grid larger horizontally (limit at 100)
 
 					// Upper Bounderies for x component
 					if (grid.get_width() + 1 <= 100)
@@ -115,18 +117,37 @@ int main()
 					break;
 
 				case(sf::Keyboard::Enter): // Enter/Return: start the program
-					t1 = std::thread(&Grid::run_a_star, &grid);
-					t1.detach();
+					if (!grid.is_running())
+					{
+
+						t1 = std::thread(&Grid::run_a_star, &grid);
+						t1.detach();
+
+					}
 					break;
 
 				case(sf::Keyboard::C):
+					grid.set_running(false);
 					grid.clear_grid();
 					break;
 
 				case(sf::Keyboard::I):
+					grid.set_running(false);
 					grid.init_grid();
 					break;
 				}
+			}
+			if (!grid.is_running() && sf::Mouse::getPosition(window).x + 2 <= window.getSize().x && sf::Mouse::getPosition(window).y + 2 <= window.getSize().y)
+			{
+				mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
+				grid.set_node_color(mouse_pos, sf::Color::Yellow);
+
+				if (last_pos != mouse_pos)
+				{
+					grid.normalize_node_color(last_pos);
+				}
+
+				last_pos = mouse_pos;
 			}
 
 			// Set up
@@ -136,10 +157,8 @@ int main()
 				if (sf::Mouse::getPosition(window).x <= window.getSize().x && sf::Mouse::getPosition(window).y <= window.getSize().y)
 				{
                     
-					sf::Vector2i mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
-					int x = mouse_pos.x;
-					int y = mouse_pos.y;
-					grid.set_node_state(sf::Vector2i(x, y), brushState);
+					mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
+					grid.set_node_state(mouse_pos, brushState);
                     if(brushState == NodeState::wall) sound.play();
 				}
 
