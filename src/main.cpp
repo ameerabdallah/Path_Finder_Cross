@@ -18,6 +18,13 @@ int main()
     std::string file_name = "../../../res/startsound.wav";
     
      sf::Music music;
+
+	 sf::SoundBuffer buffer;
+	 buffer.loadFromFile(file_name);
+
+	 sf::Sound sound;
+
+	 sound.setBuffer(buffer);
      
      if (!music.openFromFile("../../../res/RSL_120_synth_bass_ukg_organ_filter_Gm.wav"))
      {
@@ -28,15 +35,6 @@ int main()
     music.setLoop(true);
     
     
-    
-      std::string file_name = "../../../res/startsound.wav";
-      
-      sf::SoundBuffer buffer;
-      buffer.loadFromFile(file_name);
-       
-      sf::Sound sound;
-       
-      sound.setBuffer(buffer);
 
     
 	Grid grid(&window, 20, 20);

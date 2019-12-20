@@ -65,7 +65,7 @@ void Node::set_state(NodeState state)
 		break;
 	case NodeState::path:
 		rect.setFillColor(sf::Color::Blue);
-		rect.setOutlineColor(sf::Color::White);
+		rect.setOutlineColor(sf::Color::Black);
 		rect.setOutlineThickness(1.0f);
 		break;
 	case NodeState::visited:
