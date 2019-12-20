@@ -13,6 +13,19 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Path Finder", sf::Style::Close);
     
     
+    
+     sf::Music music;
+     
+     if (!music.openFromFile("../../../res/RSL_120_synth_bass_ukg_organ_filter_Gm.wav"))
+     {
+        std::cout << "Error with the music file!" << std::endl;
+     }
+     
+    music.play();
+    music.setLoop(true);
+    
+    
+    
       std::string file_name = "../../../res/startsound.wav";
       
       sf::SoundBuffer buffer;
