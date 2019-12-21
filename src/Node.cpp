@@ -16,6 +16,7 @@ Node::Node(sf::Vector2<std::int8_t> pos, Node* parent)
 	f = 0;
 }
 
+
 // Calculators
 void Node::calculate_h(sf::Vector2<std::int8_t> destination)
 {
