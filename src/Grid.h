@@ -111,4 +111,9 @@ public:
     const NodeState get_node_state(sf::Vector2<std::int8_t> pos);
 	const sf::Vector2<std::int8_t> get_mouse_pos_in_grid(sf::Vector2i mouse_pos);
 
+
+	// Test Functions
+	void run_qa_test();
+
+
 };

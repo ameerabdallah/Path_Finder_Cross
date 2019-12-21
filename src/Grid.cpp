@@ -448,3 +448,21 @@ const sf::Vector2<std::int8_t> Grid::get_mouse_pos_in_grid(sf::Vector2i mouse_po
 
 	return sf::Vector2<std::int8_t>(grid_x, grid_y);
 }
+
+// Test Functions
+
+void Grid::random_grid_setup()
+{
+	int random = rand() % 1;
+
+	for (int x = 0; x < grid_width; x++)
+	{
+		if (random)
+	}
+}
+
+void Grid::run_qa_test()
+{
+
+}
+
