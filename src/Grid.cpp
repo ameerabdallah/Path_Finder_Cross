@@ -36,6 +36,22 @@ void Grid::init_grid()
 	{
 		for (int y = 0; y < grid_height; y++)
 		{
+			delete grid[x][y];
+			grid[x][y] = NULL;
+		}
+	}
+
+	grid.resize(grid_width);
+	for (int i = 0; i < grid_width; i++)
+	{
+		grid[i].resize(grid_height);
+	}
+
+
+	for (int x = 0; x < grid_width; x++)
+	{
+		for (int y = 0; y < grid_height; y++)
+		{
 			grid[x][y] = new Node(sf::Vector2<std::int8_t>(x, y));
 		}
 	}
@@ -57,6 +73,7 @@ void Grid::resize(std::int8_t new_width, std::int8_t new_height)
 	grid_height = new_height;
 
 	// Resize the vector
+
 	grid.resize(new_width);
 	for (int x = 0; x < new_width; x++)
 	{
@@ -239,13 +256,23 @@ void Grid::run_a_star()
 		// Found the destination
 		if (current_node->get_pos() == destination_node->get_pos())
 		{
-			while (current_node != nullptr)
+			while (current_node != NULL)
 			{
 				path.push(current_node->get_pos());
 				current_node = current_node->parent;
 			}
-
 			draw_path(path);
+			for (int i = open.size() - 1; i >= 0; i--)
+			{
+				delete open[i];
+				open[i] = NULL;
+			}
+			for (int i = closed.size() - 1; i >= 0; i--)
+			{
+				delete closed[i];
+				closed[i] = NULL;
+			}
+			running = false;
 			return;
 		}
 
@@ -312,6 +339,7 @@ void Grid::run_a_star()
 			{
 				if (child->get_pos() == closed_child->get_pos())
 				{
+					delete child;
 					skip_child = true;
 					break;
 				}
@@ -323,8 +351,9 @@ void Grid::run_a_star()
 
 			for (Node* open_node : open)
 			{
-				if (open_node->get_pos() == child->get_pos()/* && child->f > open_node->f*/)
+				if (open_node->get_pos() == child->get_pos())
 				{
+					delete child;
 					skip_child = true;
 					break;
 				}
@@ -335,13 +364,23 @@ void Grid::run_a_star()
 			grid[child->get_pos().x][child->get_pos().y]->set_state(NodeState::unvisited);
 			open.push_back(child);
 		}
-
 	}
-
+	for (int i = open.size() - 1; i >= 0; i--)
+	{
+		delete open[i];
+		open[i] = NULL;
+	}
+	for (int i = closed.size() - 1; i >= 0; i--)
+	{
+		delete closed[i];
+		closed[i] = NULL;
+	}
+	running = false;
 }
 
 void Grid::draw_path(std::stack<sf::Vector2<std::int8_t>> path)
 {
+
 	while (!path.empty())
 	{
 		grid[path.top().x][path.top().y]->set_state(NodeState::path);
@@ -368,6 +407,13 @@ void Grid::clear_grid()
 void Grid::normalize_node_color(sf::Vector2<std::int8_t> pos)
 {
 	grid[pos.x][pos.y]->set_state(grid[pos.x][pos.y]->get_state());
+}
+
+void Grid::draw_window()
+{
+	window->clear();
+	draw_grid();
+	window->display();
 }
 
 // Setters
@@ -449,20 +495,48 @@ const sf::Vector2<std::int8_t> Grid::get_mouse_pos_in_grid(sf::Vector2i mouse_po
 	return sf::Vector2<std::int8_t>(grid_x, grid_y);
 }
 
+
 // Test Functions
 
 void Grid::random_grid_setup()
 {
-	int random = rand() % 1;
+	if (running) return;
+	init_grid();
 
 	for (int x = 0; x < grid_width; x++)
 	{
-		if (random)
+		for (int y = 0; y < grid_height; y++)
+		{
+
+			if (!(std::rand() % 3))
+			{
+				set_node_state(sf::Vector2<int8_t>(x, y), NodeState::wall);
+			}
+			
+		}
 	}
+
+	sf::Vector2<int8_t> new_start_pos(std::rand() % grid_width, std::rand() % grid_height);
+	set_node_state(new_start_pos, NodeState::start);
+
+	sf::Vector2<int8_t> new_destination_pos(std::rand() % grid_width, std::rand() % grid_height);
+	while (new_destination_pos == new_start_pos) new_destination_pos = sf::Vector2<int8_t>(std::rand() % grid_width, std::rand() % grid_height);
+	set_node_state(new_destination_pos, NodeState::destination);
+
+	update_grid_layout();
 }
+
 
 void Grid::run_qa_test()
 {
-
+	for (int i = 0; i < 1000; i++)
+	{
+		random_grid_setup();
+		//std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		run_a_star();
+		//std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		draw_window();
+		running = false;
+	}
 }
 

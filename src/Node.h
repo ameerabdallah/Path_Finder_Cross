@@ -31,7 +31,7 @@ public:
 	float f;			// sum of g and h
 
 	// Constructor
-	Node(sf::Vector2<std::int8_t> pos = sf::Vector2<std::int8_t>(0,0), Node* parent = nullptr);
+	Node(sf::Vector2<std::int8_t> pos = sf::Vector2<std::int8_t>(0,0), Node* parent = NULL);
 
 	// Calculators
 	void calculate_h(sf::Vector2<std::int8_t> distance);

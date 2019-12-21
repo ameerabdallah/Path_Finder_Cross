@@ -9,6 +9,7 @@
 
 int main()
 {
+	std::srand(std::time(0));
 	NodeState brushState = NodeState::open;
 	sf::RenderWindow window(sf::VideoMode(500, 500), "Path Finder", sf::Style::Close);
     
@@ -33,9 +34,6 @@ int main()
      
     music.play();
     music.setLoop(true);
-    
-    
-
     
 	Grid grid(&window, 20, 20);
 	window.setVerticalSyncEnabled(true);
@@ -128,6 +126,19 @@ int main()
 					}
 					break;
 
+				case(sf::Keyboard::R):
+					if (!grid.is_running())
+					{
+						grid.random_grid_setup();
+						grid.set_running(false);
+					}
+					break;
+
+				case(sf::Keyboard::T):
+					grid.set_running(false);
+					grid.run_qa_test();
+					break;
+
 				case(sf::Keyboard::Enter): // Enter/Return: start the program
 					if (!grid.is_running())
 					{
@@ -149,10 +160,26 @@ int main()
 					break;
 				}
 			}
-			if (!grid.is_running() && sf::Mouse::getPosition(window).x + 2 <= window.getSize().x && sf::Mouse::getPosition(window).y + 2 <= window.getSize().y)
+			if (!grid.is_running())
 			{
-				mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
+				sf::Vector2i mouse_pos_window = sf::Mouse::getPosition(window);
+				int x = mouse_pos_window.x;
+				int y = mouse_pos_window.y;
+				if (x >= window.getSize().x)
+				{
+					x = window.getSize().x - 1;
+				}
+				if (y >= window.getSize().y)
+				{
+					y = window.getSize().y-1;
+				}
+				mouse_pos = grid.get_mouse_pos_in_grid(sf::Vector2i(x, y));
 				grid.set_node_color(mouse_pos, sf::Color::Yellow);
+
+				if (last_pos.x >= grid.get_width() || last_pos.y >= grid.get_height())
+				{
+					last_pos = mouse_pos;
+				}
 
 				if (last_pos != mouse_pos)
 				{
@@ -166,13 +193,20 @@ int main()
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !grid.is_running())
 			{
 
-				if (sf::Mouse::getPosition(window).x <= window.getSize().x && sf::Mouse::getPosition(window).y <= window.getSize().y)
+				sf::Vector2i mouse_pos_window = sf::Mouse::getPosition(window);
+				int x = mouse_pos_window.x;
+				int y = mouse_pos_window.y;
+				if (x >= window.getSize().x)
 				{
-                    
-					mouse_pos = grid.get_mouse_pos_in_grid(sf::Mouse::getPosition(window));
-					grid.set_node_state(mouse_pos, brushState);
-                    if(brushState == NodeState::wall) sound.play();
+					x = window.getSize().x - 1;
 				}
+				if (y >= window.getSize().y)
+				{
+					y = window.getSize().y - 1;
+				}
+				mouse_pos = grid.get_mouse_pos_in_grid(sf::Vector2i(x, y));
+				grid.set_node_state(mouse_pos, brushState);
+                if(brushState == NodeState::wall) sound.play();
 
 			}
 

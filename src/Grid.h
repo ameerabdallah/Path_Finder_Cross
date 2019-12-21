@@ -94,6 +94,8 @@ public:
 	// clear the grid
 	void clear_grid();
 
+	void draw_window();
+
 	// normalize the color to it's respective NodeState
 	void normalize_node_color(sf::Vector2<std::int8_t> pos);
 
@@ -111,6 +113,7 @@ public:
 	const int get_rect_height();
     const NodeState get_node_state(sf::Vector2<std::int8_t> pos);
 	const sf::Vector2<std::int8_t> get_mouse_pos_in_grid(sf::Vector2i mouse_pos);
+
 
 
 	// Test Functions
