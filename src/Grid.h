@@ -6,6 +6,7 @@
 #include "Node.h"
 #include <iostream>
 #include "SFML/Window/Mouse.hpp"
+#include <random>
 
 
 /*
@@ -113,6 +114,7 @@ public:
 
 
 	// Test Functions
+	void random_grid_setup();
 	void run_qa_test();
 
 
